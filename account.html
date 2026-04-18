@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Account | ATCHABOYHOLLA Entertainment</title>
+  <meta name="description" content="Sign up or log in to Watch & Rate Nation." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="index.html" aria-label="ATCHABOYHOLLA Entertainment Home">
+        <img class="brand__logo" src="assets/watch-rate-logo.png" alt="Watch & Rate Nation Logo" />
+        <span class="brand__text">ATCHABOYHOLLA <em>Entertainment</em></span>
+      </a>
+
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="movies.html">🎬 Movies</a>
+        <a href="tv-shows.html">📺 TV Shows</a>
+        <a href="watch-rate.html">Watch & Rate Nation</a>
+      </nav>
+      <img id="headerAvatar"
+           style="width:36px;height:36px;border-radius:50%;display:none;">
+
+      <span id="userWelcome" class="userWelcome"></span>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <div class="sectionHead">
+        <h2>Join Watch &amp; Rate Nation</h2>
+        <p>Create an account or log in to post reviews.</p>
+      </div>
+
+      <div class="panel accountPanel">
+        <label>
+          Display Name
+          <input id="authDisplay" type="text" placeholder="Your nickname" />
+        </label>
+
+        <label>
+          Email
+          <input id="authEmail" type="email" placeholder="you@example.com" />
+        </label>
+
+        <label>
+          Password
+          <input id="authPass" type="password" placeholder="Password" />
+        </label>
+
+        <div class="accountActions">
+          <button id="btnSignUp" class="btn btn--primary" type="button">Sign Up</button>
+          <button id="btnLogin" class="btn btn--ghost" type="button">Login</button>
+          <button id="btnLogout" class="btn btn--ghost" type="button" style="display:none;">Logout</button>
+        </div>
+
+        <p id="authStatus" class="fineprint" style="margin-top:12px;"></p>
+
+        
+        <div class="divider"></div>
+
+        <h3 style="margin:0 0 10px;">Profile Avatar</h3>
+        <p class="muted" style="margin-top:0;">Upload a profile picture for your public user page.</p>
+
+        <input id="avatarUpload" type="file" accept="image/*" />
+
+        <div class="accountActions" style="margin-top:12px;">
+          <button id="btnUploadAvatar" class="btn btn--primary" type="button">Upload Avatar</button>
+        </div>
+
+        <p id="avatarStatus" class="fineprint" style="margin-top:10px;"></p>
+
+        <div style="margin-top:10px;">
+          <img id="avatarPreview" alt="Avatar preview" style="width:96px;height:96px;border-radius:999px;display:none;object-fit:cover;border:1px solid       rgba(255,255,255,.14);" />
+        </div>
+
+
+        <p class="muted">
+          After logging in, go post a review:
+          <a href="movies.html">Movies</a> • <a href="tv-shows.html">TV Shows</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> ATCHABOYHOLLA Entertainment</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>

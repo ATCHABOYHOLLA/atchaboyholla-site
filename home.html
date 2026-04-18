@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ATCHABOYHOLLA Entertainment</title>
+  <meta name="description" content="ATCHABOYHOLLA Entertainment — Gaming • Movies • Streaming • Culture" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- Top Nav -->
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="index.html" aria-label="ATCHABOYHOLLA Entertainment Home">
+        <!-- optional logo -->
+        <img class="brand__logo" src="assets/watch-rate-logo.png" alt="ATCHABOYHOLLA Logo" />
+        <span class="brand__text">ATCHABOYHOLLA <em>Entertainment</em></span>
+      </a>
+
+      <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav" id="nav">
+        <a href="#about">About</a>
+        <a href="#lanes">Content</a>
+        <a href="watch-rate.html">⭐ Watch & Rate Nation</a>
+        <a href="gaming-clips.html">🎮 Gaming Clips</a>
+        <a href="#contact">Contact</a>
+
+        <!-- Dynamic Auth (your app.js updates these) -->
+        <span id="userWelcome" class="userWelcome" style="display:none;"></span>
+        <a id="navAuthLink" href="account.html">Sign Up / Login</a>
+        <img id="headerAvatar"
+             style="width:36px;height:36px;border-radius:50%;display:none;">
+
+
+        <button id="navLogoutBtn" class="btn btn--small btn--ghost" type="button" style="display:none;">
+          Logout
+        </button>
+
+        <span id="userWelcome" class="userWelcome" style="display:none;"></span>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main id="top" class="hero">
+    <div class="hero__overlay"></div>
+
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <h1>ATCHABOYHOLLA <span>Entertainment</span></h1>
+        <p class="tagline">Gaming • Movies • Streaming • Culture</p>
+
+        <div class="ctaRow">
+          <!-- Main WRN button (auth-aware if you add the small JS snippet below) -->
+          <a class="btn btn--primary btn--joinPulse" id="wrnMainBtn"
+             href="account.html?redirect=watch-rate.html">
+            ⭐ Enter Watch & Rate Nation
+          </a>
+
+          <a class="btn btn--ghost" href="gaming-clips.html">🎮 Upload Gaming Clips</a>
+        </div>
+
+        <div class="quickStats">
+          <div class="stat"><strong>Live</strong><span>Streaming & Clips</span></div>
+          <div class="stat"><strong>Rated</strong><span>Movies & TV</span></div>
+          <div class="stat"><strong>Built</strong><span>Community</span></div>
+        </div>
+      </div>
+
+      <div class="hero__card">
+        <h2>What’s New</h2>
+        <ul class="list">
+          <li>🔥 New highlights & uploads</li>
+          <li>⭐ Nation picks + ratings</li>
+          <li>🎮 Community clip reactions</li>
+          <li>💬 Debates, watch parties, and more</li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <a class="btn btn--primary" href="#lanes">Explore the Hub</a>
+        <p class="fineprint muted">Welcome to the Nation.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- About -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="sectionHead">
+        <h2>About ATCHABOYHOLLA Entertainment</h2>
+        <p>A home for gaming, movies, streaming, and culture — built for the community.</p>
+      </div>
+
+      <div class="grid2">
+        <div class="panel">
+          <h3>The Mission</h3>
+          <p>
+            Deliver entertaining content, real reviews, and live vibes — and build a Nation of people
+            who love to watch, rate, and talk about it.
+          </p>
+          <div class="pillRow">
+            <span class="pill">Gaming</span>
+            <span class="pill">Movies</span>
+            <span class="pill">TV Shows</span>
+            <span class="pill">Streaming</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>What You’ll Find</h3>
+          <ul class="checklist">
+            <li>Gaming streams + clips</li>
+            <li>Watch & Rate Nation reviews</li>
+            <li>Community events + watch parties</li>
+            <li>Behind-the-scenes content</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+<section class="section">
+  <div class="container">
+    <div class="sectionHead">
+      <h2>Featured</h2>
+      <p>What the Nation is talking about right now.</p>
+    </div>
+
+    <div class="featuredRow">
+      <div class="featuredCard">
+        <div class="featuredTop">⭐ Top Rated</div>
+        <div class="featuredBig" id="featTopRated">—</div>
+        <div class="muted">This week</div>
+      </div>
+
+      <div class="featuredCard">
+        <div class="featuredTop">🔥 Trending</div>
+        <div class="featuredBig" id="featTrending">—</div>
+        <div class="muted">Reviews</div>
+      </div>
+
+      <div class="featuredCard">
+        <div class="featuredTop">🎮 Hot Clips</div>
+        <div class="featuredBig" id="featHotClips">—</div>
+        <div class="muted">New uploads</div>
+      </div>
+
+      <div class="featuredCard">
+        <div class="featuredTop">🎬 Community Pick</div>
+        <div class="featuredBig" id="featPick">—</div>
+        <div class="muted">Tonight</div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section section--alt">
+  <div class="container">
+    <div class="sectionHead">
+      <h2>Trending in the Nation</h2>
+      <p>Top reviews and the highest rated picks — updated live.</p>
+    </div>
+
+    <div class="trendingGrid">
+      <div class="panel">
+        <div class="trendingHeader">
+          <h3>🔥 Trending Reviews</h3>
+          <a class="link" href="watch-rate.html">See all →</a>
+        </div>
+
+        <div id="homeTrendingList" class="homeList">
+          <p class="muted">Loading…</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="trendingHeader">
+          <h3>⭐ Top Rated</h3>
+          <a class="link" href="watch-rate.html">See rankings →</a>
+        </div>
+
+        <div id="homeTopRatedList" class="homeList">
+          <p class="muted">Loading…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Content Lanes -->
+  <section id="lanes" class="section section--alt">
+    <div class="container">
+      <div class="sectionHead">
+        <h2>Content Lanes</h2>
+        <p>Pick your vibe — everything lives under one umbrella.</p>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <h3>🎮 Gaming</h3>
+          <p>Streams, highlights, challenges, and community sessions.</p>
+          <a class="link" href="gaming-clips.html">Go to Gaming Clips →</a>
+        </article>
+
+        <article class="card">
+          <h3>⭐ Watch & Rate Nation</h3>
+          <p>Rate movies & TV shows, drop reviews, and see what the Nation thinks.</p>
+          <a class="link" href="watch-rate.html">Enter WRN →</a>
+        </article>
+
+        <article class="card">
+          <h3>🎬 Movies</h3>
+          <p>Movie reviews, hot takes, and ranked lists.</p>
+          <a class="link" href="movies.html">Browse Movies →</a>
+        </article>
+
+        <article class="card">
+          <h3>📺 TV Shows</h3>
+          <p>TV ratings, season discussions, and recommendations.</p>
+          <a class="link" href="tv-shows.html">Browse TV Shows →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+<section class="section">
+  <div class="container">
+    <div class="joinCTA">
+      <div>
+        <h2>Join Watch & Rate Nation</h2>
+        <p class="muted">Create an account to post reviews, rate movies/TV, and upload gaming clips.</p>
+      </div>
+
+      <div class="ctaRow">
+        <a class="btn btn--primary btn--joinPulse" id="joinCTABtn"
+           href="account.html?redirect=watch-rate.html">
+          Sign Up / Login
+        </a>
+        <a class="btn btn--ghost" href="watch-rate.html">Browse WRN</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- Contact -->
+  <section id="contact" class="section">
+    <div class="container">
+      <div class="sectionHead">
+        <h2>Contact</h2>
+        <p>Want to collab, sponsor, or join the Nation?</p>
+
+        <p style="margin-top: 10px;">
+          📧 Email:
+          <a href="mailto:atchaboyhollaentertainment@gmail.com">
+            atchaboyhollaentertainment@gmail.com
+          </a>
+        </p>
+      </div>
+
+      <form class="form panel" id="contactForm">
+        <label>
+          Name
+          <input type="text" required />
+        </label>
+
+        <label>
+          Email
+          <input type="email" required />
+        </label>
+
+        <label>
+          Message
+          <textarea rows="5" required></textarea>
+        </label>
+
+        <button class="btn btn--primary" type="submit">Send (Demo)</button>
+        <p class="fineprint" id="formStatus"></p>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+  <div class="container footer__inner">
+    <p>© <span id="year"></span> ATCHABOYHOLLA Entertainment</p>
+  </div>
+</footer>
+
+<!-- Supabase MUST load first -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Then your app logic -->
+<script src="app.js"></script>
+
+</body>
+</html>
+

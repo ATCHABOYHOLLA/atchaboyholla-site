@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Profile • ATCHABOYHOLLA Entertainment</title>
+  <meta name="description" content="Public profile page for Watch & Rate Nation members." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- Top Nav -->
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="index.html#top" aria-label="ATCHABOYHOLLA Entertainment Home">
+        <img class="brand__logo" src="assets/watch-rate-logo.png" alt="Watch & Rate Nation Logo">
+        <span class="brand__text">ATCHABOYHOLLA <em>Entertainment</em></span>
+      </a>
+
+      <!-- Right side: avatar + welcome + menu -->
+      <div style="display:flex;align-items:center;gap:12px;">
+        <img id="headerAvatar" alt="Your avatar"
+             style="width:36px;height:36px;border-radius:50%;display:none;object-fit:cover;border:1px solid rgba(255,255,255,.14);" />
+        <span id="userWelcome" class="userWelcome"></span>
+
+        <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <nav class="nav" id="nav">
+        <a href="index.html#about">About</a>
+        <a href="index.html#content">Content</a>
+        <a href="movies.html">🎬 Movies</a>
+        <a href="tv-shows.html">📺 TV Shows</a>
+        <a href="watch-rate.html">Watch & Rate Nation</a>
+        <a href="gaming-clips.html">🎮 Gaming Clips</a>
+        <a href="index.html#contact">Contact</a>
+        <a id="navAuthLink" href="account.html">Sign Up / Login</a>
+        <img id="headerAvatar"
+             style="width:36px;height:36px;border-radius:50%;display:none;">
+
+        <button id="navLogoutBtn" class="btn btn--small btn--ghost" type="button" style="display:none;">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Profile Hero -->
+  <main class="wrPageHero" style="min-height:45vh;">
+    <div class="wrPageHero__overlay"></div>
+    <div class="container wrPageHero__inner">
+      <div>
+        <h1 id="userName">Member</h1>
+        <p class="muted">Public profile • Watch & Rate Nation</p>
+        <div class="ctaRow">
+          <a class="btn btn--ghost" href="watch-rate.html">Back to Watch & Rate</a>
+          <a class="btn btn--ghost" href="gaming-clips.html">See Gaming Clips</a>
+        </div>
+      </div>
+
+      <div class="panel" style="display:flex;align-items:center;gap:14px;">
+        <img id="userAvatar" alt="User avatar"
+             style="width:110px;height:110px;border-radius:999px;object-fit:cover;border:1px solid rgba(255,255,255,.14);" />
+        <div>
+          <h3 style="margin:0;">Profile</h3>
+          <p class="muted" style="margin:6px 0 0;">Recent activity below.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <section class="section">
+    <div class="container">
+      <div class="sectionHead">
+        <h2>Latest Reviews</h2>
+        <p>Movies and TV reviews posted by this member.</p>
+      </div>
+
+      <div id="userReviews" class="wrList">
+        <p class="muted">Loading…</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="sectionHead">
+        <h2>Gaming Clips</h2>
+        <p>Recent uploads by this member.</p>
+      </div>
+
+      <div id="userClips" class="wrList">
+        <p class="muted">Loading…</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> ATCHABOYHOLLA Entertainment</p>
+      <p class="muted">Built for the Nation</p>
+    </div>
+  </footer>
+
+  <!-- Supabase MUST load first -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Movie Ratings • Watch & Rate Nation</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- Nav -->
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="index.html">
+        <span class="brand__mark">▶</span>
+        <span class="brand__text">ATCHABOYHOLLA <em>Entertainment</em></span>
+      </a>
+
+      <nav class="nav" id="nav">
+  <a href="index.html">Home</a>
+  <a href="movies.html">🎬 Movies</a>
+  <a href="tv-shows.html">📺 TV Shows</a>
+  <a href="watch-rate.html">⭐ Watch & Rate Nation</a>
+  <a href="gaming-clips.html">🎮 Gaming Clips</a>
+
+  <!-- Dynamic Auth -->
+  <a id="navAuthLink" href="account.html">Sign Up / Login</a>
+  <img id="headerAvatar"
+     style="width:36px;height:36px;border-radius:50%;display:none;">
+
+
+<button id="navLogoutBtn" class="btn btn--small btn--ghost" type="button" style="display:none;">
+  Logout
+</button>
+
+<span id="userWelcome" class="userWelcome" style="display:none;"></span>
+>
+</nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main class="wrPageHero">
+    <div class="wrPageHero__overlay"></div>
+    <div class="container wrPageHero__inner">
+      <div>
+        <h1>🎬 Movie Ratings</h1>
+        <p class="muted">Rate movies and see what the Nation thinks</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Rating System -->
+  <section class="section">
+    <div class="container grid2">
+
+      <!-- Form -->
+      <div class="panel">
+        <h3>Submit a Movie Rating</h3>
+
+        <form class="form" id="ratingForm">
+          <!-- HARD LOCKED TO MOVIE -->
+          <input type="hidden" id="wrType" value="Movie" />
+
+          <label>
+            Movie Title
+            <input type="text" id="wrTitle" required />
+          </label>
+
+          <label>
+            Rating
+            <div class="starPicker">
+              <div class="starsRow" id="starRow"></div>
+              <div class="starMeta">
+                <strong id="wrSelected">0.0</strong>/5
+              </div>
+            </div>
+          </label>
+
+          <label>
+            Review
+            <textarea id="wrReview" rows="4" required></textarea>
+          </label>
+
+          <button class="btn btn--primary">Post Movie Rating</button>
+          <p class="fineprint" id="wrStatus"></p>
+        </form>
+      </div>
+
+      <!-- Results -->
+      <div class="panel">
+        <h3>Nation Movie Ratings</h3>
+
+        <div class="wrStats">
+          <div class="wrStat">
+            <span class="muted">Average</span>
+            <strong id="wrAvg">0.0</strong>/5
+            <div id="wrAvgStars">☆☆☆☆☆</div>
+          </div>
+
+          <div class="wrStat">
+            <span class="muted">Total</span>
+            <strong id="wrCount">0</strong>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <div id="wrList"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+  <div class="container footer__inner">
+    <p>© <span id="year"></span> ATCHABOYHOLLA Entertainment</p>
+  </div>
+</footer>
+
+<!-- Supabase MUST load first -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Then your app logic -->
+<script src="app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,488 @@
+/* =========================================================
+   ATCHABOYHOLLA Entertainment — app.js
+   - Supabase client: sb
+   - No top-level await
+   - Default avatar fallback
+   - Reviews show username + avatar
+========================================================= */
+(() => {
+  "use strict";
+
+  /* ===================== SUPABASE SETUP ===================== */
+  const SUPABASE_URL = "https://xfznhdxeifrtbcaagdoq.supabase.co";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhmem5oZHhlaWZydGJjYWFnZG9xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MzI2OTQsImV4cCI6MjA4NjMwODY5NH0.FqClkDemAvxhftotSrIf90xunRrECLC-leVP2-nQgug";
+
+  const sb = window.supabase?.createClient
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    : null;
+
+  /* ===================== SMALL HELPERS ===================== */
+  const qs = (id) => document.getElementById(id);
+
+  const DEFAULT_AVATAR_URL = "assets/default-avatar.png";
+
+  function escapeHtml(s) {
+    return String(s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function toStars(r) {
+    const whole = Math.round(Number(r) || 0);
+    return Array.from({ length: 5 }, (_, i) => (i < whole ? "★" : "☆")).join("");
+  }
+
+  function formatDate(ts) {
+    try {
+      return new Date(ts).toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    } catch {
+      return "";
+    }
+  }
+
+  function currentPage() {
+    return (location.pathname.split("/").pop() || "index.html").toLowerCase();
+  }
+
+  /* ===================== AUTH + PROFILE ===================== */
+  async function getSessionUser() {
+    if (!sb) return null;
+    const { data } = await sb.auth.getSession();
+    return data?.session?.user ?? null;
+  }
+
+  async function getProfile(userId) {
+    if (!sb || !userId) return null;
+    const { data } = await sb
+      .from("profiles")
+      .select("id, display_name, avatar_path")
+      .eq("id", userId)
+      .maybeSingle();
+    return data || null;
+  }
+
+  async function ensureProfileRow(user) {
+    if (!sb || !user) return;
+
+    // Best-effort display name
+    const display =
+      (user.user_metadata && user.user_metadata.display_name) ||
+      (user.email ? String(user.email).split("@")[0] : "Member");
+
+    // If your profiles table has display_name NOT NULL, this avoids the constraint error.
+    await sb.from("profiles").upsert({
+      id: user.id,
+      display_name: String(display || "Member"),
+    });
+  }
+
+  /* ===================== AVATAR HELPERS ===================== */
+  function getAvatarPublicUrl(avatarPath) {
+    if (!sb || !avatarPath) return DEFAULT_AVATAR_URL;
+    // Public bucket: "avatars"
+    const { data } = sb.storage.from("avatars").getPublicUrl(avatarPath);
+    return data?.publicUrl || DEFAULT_AVATAR_URL;
+  }
+
+  async function loadHeaderAvatar() {
+    const img = qs("headerAvatar"); // optional element in header/nav
+    if (!img) return;
+
+    const user = await getSessionUser();
+    if (!user) {
+      img.style.display = "none";
+      img.src = "";
+      return;
+    }
+
+    await ensureProfileRow(user);
+    const profile = await getProfile(user.id);
+    const url = getAvatarPublicUrl(profile?.avatar_path);
+
+    img.src = url;
+    img.style.display = "inline-block";
+  }
+
+  // Account page avatar upload (expects <input type="file" id="avatarFile"> and a button #btnUploadAvatar)
+  async function uploadAvatarFromAccountPage() {
+    const status = qs("avatarStatus");
+    const fileInput = qs("avatarFile");
+    const file = fileInput?.files?.[0];
+
+    if (!sb) return status && (status.textContent = "❌ Supabase not loaded.");
+    const user = await getSessionUser();
+    if (!user) return status && (status.textContent = "❗ Please login first.");
+    if (!file) return status && (status.textContent = "❗ Choose an image first.");
+
+    await ensureProfileRow(user);
+
+    const cleanExt = (file.name.split(".").pop() || "png").toLowerCase();
+    const path = `${user.id}.${cleanExt}`;
+
+    status && (status.textContent = "Uploading avatar…");
+
+    const { error: upErr } = await sb.storage
+      .from("avatars")
+      .upload(path, file, { upsert: true, contentType: file.type });
+
+    if (upErr) {
+      console.error("Avatar upload error:", upErr);
+      status && (status.textContent = "❌ Avatar upload failed.");
+      return;
+    }
+
+    const { error: profErr } = await sb.from("profiles").upsert({
+      id: user.id,
+      display_name:
+        (user.user_metadata && user.user_metadata.display_name) ||
+        (user.email ? String(user.email).split("@")[0] : "Member"),
+      avatar_path: path,
+    });
+
+    if (profErr) {
+      console.error("Profile update error:", profErr);
+      status && (status.textContent = "❌ Profile update failed.");
+      return;
+    }
+
+    status && (status.textContent = "✅ Avatar updated!");
+    await loadHeaderAvatar();
+  }
+
+  /* ===================== NAV UI (optional) ===================== */
+  function initMobileMenu() {
+    const menuBtn = qs("menuBtn");
+    const nav = qs("nav");
+
+    menuBtn?.addEventListener("click", () => {
+      const open = nav?.classList.toggle("isOpen");
+      menuBtn.setAttribute("aria-expanded", String(!!open));
+    });
+
+    nav?.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", () => {
+        nav.classList.remove("isOpen");
+        menuBtn?.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  function setFooterYear() {
+    const yearEl = qs("year");
+    if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+  }
+
+  async function setHeaderAuthUI() {
+    const navAuthLink = qs("navAuthLink");
+    const navLogoutBtn = qs("navLogoutBtn");
+
+    const user = await getSessionUser();
+    const loggedIn = !!user;
+
+    if (navAuthLink) {
+      const current = currentPage();
+      navAuthLink.textContent = loggedIn ? "Account" : "Sign Up / Login";
+      navAuthLink.href = loggedIn
+        ? "account.html"
+        : `account.html?redirect=${encodeURIComponent(current)}`;
+    }
+
+    if (navLogoutBtn) {
+      navLogoutBtn.style.display = loggedIn ? "inline-flex" : "none";
+      navLogoutBtn.onclick = async () => {
+        await sb?.auth?.signOut?.();
+        await setHeaderAuthUI();
+        await loadHeaderAvatar();
+        location.href = "index.html";
+      };
+    }
+  }
+
+  /* ===================== REVIEWS (Watch & Rate Nation) ===================== */
+  let filterType = null; // locked pages use hidden #wrType value
+
+  function initFilterType() {
+    const wrTypeEl = qs("wrType");
+    if (!wrTypeEl) return;
+    filterType = wrTypeEl.value || null;
+  }
+
+  async function fetchReviewsWithProfiles() {
+    if (!sb) return [];
+
+    // Pull reviews
+    let q = sb
+      .from("reviews")
+      .select("id,title,type,rating,review,created_at,user_id")
+      .order("created_at", { ascending: false });
+
+    if (filterType) q = q.eq("type", filterType);
+
+    const { data: reviews, error } = await q;
+    if (error) {
+      console.error(error);
+      return [];
+    }
+
+    // Pull related profiles in one extra query
+    const userIds = Array.from(new Set((reviews || []).map((r) => r.user_id).filter(Boolean)));
+    let profileMap = {};
+
+    if (userIds.length) {
+      const { data: profs } = await sb
+        .from("profiles")
+        .select("id,display_name,avatar_path")
+        .in("id", userIds);
+
+      (profs || []).forEach((p) => (profileMap[p.id] = p));
+    }
+
+    // merge
+    return (reviews || []).map((r) => ({
+      ...r,
+      profile: profileMap[r.user_id] || null,
+    }));
+  }
+
+  function applyReviewFilters(items) {
+    const wrSearch = qs("wrSearch");
+    const wrSearchMeta = qs("wrSearchMeta");
+    const wrMinRating = qs("wrMinRating");
+    const wrSort = qs("wrSort");
+
+    let out = [...items];
+
+    const q = (wrSearch?.value || "").trim().toLowerCase();
+    if (q) {
+      out = out.filter((r) => {
+        const name = (r.profile?.display_name || "").toLowerCase();
+        const hay = `${r.title || ""} ${r.review || ""} ${name}`.toLowerCase();
+        return hay.includes(q);
+      });
+    }
+
+    const min = Number(wrMinRating?.value || "0");
+    if (min > 0) out = out.filter((r) => Number(r.rating || 0) >= min);
+
+    const sort = wrSort?.value || "newest";
+    out.sort((a, b) => {
+      const ra = Number(a.rating), rb = Number(b.rating);
+      const ta = new Date(a.created_at).getTime(), tb = new Date(b.created_at).getTime();
+      if (sort === "highest") return rb - ra || tb - ta;
+      if (sort === "lowest") return ra - rb || tb - ta;
+      if (sort === "oldest") return ta - tb;
+      return tb - ta;
+    });
+
+    if (wrSearchMeta) wrSearchMeta.textContent = out.length ? `${out.length} result(s)` : "0 results";
+    return out;
+  }
+
+  function renderReviewStats(items) {
+    const wrCount = qs("wrCount");
+    const wrAvg = qs("wrAvg");
+    const wrAvgStars = qs("wrAvgStars");
+    if (!wrCount || !wrAvg || !wrAvgStars) return;
+
+    wrCount.textContent = String(items.length);
+    const avg = items.length
+      ? items.reduce((s, r) => s + Number(r.rating || 0), 0) / items.length
+      : 0;
+
+    wrAvg.textContent = avg.toFixed(1);
+    wrAvgStars.textContent = toStars(avg);
+  }
+
+  function renderReviewList(items) {
+    const wrList = qs("wrList");
+    if (!wrList) return;
+
+    if (!items.length) {
+      wrList.innerHTML = `<p class="muted">No ratings yet. Be the first to set the tone.</p>`;
+      return;
+    }
+
+    wrList.innerHTML = items.slice(0, 30).map((r) => {
+      const name = r.profile?.display_name || "Member";
+      const avatarUrl = getAvatarPublicUrl(r.profile?.avatar_path);
+
+      return `
+        <div class="wrItem">
+          <div class="wrTop" style="align-items:center;">
+            <div style="display:flex; gap:10px; align-items:center;">
+              <img
+                src="${escapeHtml(avatarUrl)}"
+                alt="${escapeHtml(name)}"
+                style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,.18);"
+                onerror="this.onerror=null;this.src='${DEFAULT_AVATAR_URL}'"
+              />
+              <div>
+                <div class="wrTitle">${escapeHtml(r.title || "Untitled")}</div>
+                <div class="muted" style="font-size:.9rem;">
+                  ${escapeHtml(name)} • ${formatDate(r.created_at)}
+                </div>
+              </div>
+            </div>
+
+            <div class="wrBadge">${escapeHtml(r.type || "")}</div>
+          </div>
+
+          <div class="wrRatingLine">
+            <div class="wrSmallStars">${toStars(Number(r.rating))}</div>
+            <strong>${Number(r.rating).toFixed(1)}/5</strong>
+          </div>
+
+          <div class="wrReview">${escapeHtml(r.review || "")}</div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  async function refreshWRN() {
+    // Only run on pages that have WRN UI
+    if (!qs("wrList") && !qs("wrAvg") && !qs("wrCount")) return;
+
+    const all = await fetchReviewsWithProfiles();
+    const filtered = applyReviewFilters(all);
+
+    renderReviewStats(filtered);
+    renderReviewList(filtered);
+  }
+
+  /* ===================== POST REVIEW (existing form) ===================== */
+  const steps = Array.from({ length: 10 }, (_, i) => (i + 1) * 0.5);
+  let selectedRating = 0.0;
+
+  function renderStarButtons() {
+    const starRow = qs("starRow");
+    const wrSelected = qs("wrSelected");
+    if (!starRow || !wrSelected) return;
+
+    starRow.innerHTML = "";
+    steps.forEach((val) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "starBtn";
+      b.textContent = val.toFixed(1);
+      b.addEventListener("click", () => {
+        selectedRating = val;
+        wrSelected.textContent = selectedRating.toFixed(1);
+        starRow.querySelectorAll(".starBtn").forEach((x) => x.classList.remove("isActive"));
+        b.classList.add("isActive");
+      });
+      starRow.appendChild(b);
+    });
+  }
+
+  async function wireReviewForm() {
+    const ratingForm = qs("ratingForm");
+    const wrTitle = qs("wrTitle");
+    const wrTypeEl = qs("wrType");
+    const wrReview = qs("wrReview");
+    const wrStatus = qs("wrStatus");
+    const starRow = qs("starRow");
+    const wrSelected = qs("wrSelected");
+
+    if (starRow && wrSelected) renderStarButtons();
+    if (!ratingForm) return;
+
+    ratingForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const user = await getSessionUser();
+      if (!user) return wrStatus && (wrStatus.textContent = "🔒 Please login to post a review.");
+      if (selectedRating <= 0) return wrStatus && (wrStatus.textContent = "❗ Please select a rating.");
+
+      const title = wrTitle?.value?.trim();
+      const review = wrReview?.value?.trim();
+      const type = wrTypeEl?.value;
+
+      if (!title || !review || !type) {
+        wrStatus && (wrStatus.textContent = "❗ Please enter a title and review.");
+        return;
+      }
+
+      wrStatus && (wrStatus.textContent = "Posting…");
+
+      await ensureProfileRow(user);
+
+      const { error } = await sb.from("reviews").insert({
+        user_id: user.id,
+        title,
+        type,
+        rating: selectedRating,
+        review,
+      });
+
+      if (error) {
+        console.error(error);
+        wrStatus && (wrStatus.textContent = "❌ Failed to post review.");
+        return;
+      }
+
+      wrStatus && (wrStatus.textContent = "✅ Posted!");
+      ratingForm.reset();
+      selectedRating = 0;
+      if (wrSelected) wrSelected.textContent = "0.0";
+      starRow?.querySelectorAll(".starBtn").forEach((x) => x.classList.remove("isActive"));
+
+      await refreshWRN();
+    });
+  }
+
+  /* ===================== ACCOUNT PAGE WIRES ===================== */
+  function wireAccountButtons() {
+    const btnUploadAvatar = qs("btnUploadAvatar");
+    btnUploadAvatar?.addEventListener("click", async () => {
+      try {
+        await uploadAvatarFromAccountPage();
+      } catch (e) {
+        console.error(e);
+        const status = qs("avatarStatus");
+        status && (status.textContent = "❌ Avatar upload failed. Check console.");
+      }
+    });
+  }
+
+  /* ===================== BOOT ===================== */
+  async function boot() {
+    initMobileMenu();
+    setFooterYear();
+    initFilterType();
+
+    // Header
+    await setHeaderAuthUI();
+    await loadHeaderAvatar();
+
+    // WRN
+    const wrSearch = qs("wrSearch");
+    const wrMinRating = qs("wrMinRating");
+    const wrSort = qs("wrSort");
+    wrSearch?.addEventListener("input", refreshWRN);
+    wrMinRating?.addEventListener("change", refreshWRN);
+    wrSort?.addEventListener("change", refreshWRN);
+
+    await wireReviewForm();
+    wireAccountButtons();
+
+    // Keep UI updated
+    sb?.auth?.onAuthStateChange?.(async () => {
+      await setHeaderAuthUI();
+      await loadHeaderAvatar();
+      await refreshWRN();
+    });
+
+    await refreshWRN();
+  }
+
+  // run
+  boot().catch((e) => console.error("boot error:", e));
+})();

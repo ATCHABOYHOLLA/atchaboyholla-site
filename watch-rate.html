@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Watch & Rate Nation • ATCHABOYHOLLA Entertainment</title>
+  <meta name="description" content="Watch & Rate Nation — Real fans. Real ratings. Real talk." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="index.html" aria-label="ATCHABOYHOLLA Entertainment Home">
+        <span class="brand__mark">▶</span>
+        <span class="brand__text">ATCHABOYHOLLA <em>Entertainment</em></span>
+      </a>
+
+      <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav" id="nav">
+        <a href="index.html">Home</a>
+        <a href="movies.html">🎬 Movies</a>
+        <a href="tv-shows.html">📺 TV Shows</a>
+        <a href="watch-rate.html">⭐ Watch & Rate Nation</a>
+        <a href="gaming-clips.html">🎮 Gaming Clips</a>
+
+        <span id="userWelcome" class="userWelcome"></span>
+        <a id="navAuthLink" href="account.html">Sign Up / Login</a>
+        <img
+          id="headerAvatar"
+          alt="User avatar"
+          style="width:36px;height:36px;border-radius:50%;display:none;"
+        />
+        <button
+          id="navLogoutBtn"
+          class="btn btn--small btn--ghost"
+          type="button"
+          style="display:none;"
+        >
+          Logout
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrPageHero">
+    <div class="wrPageHero__overlay"></div>
+    <div class="container wrPageHero__inner">
+      <div>
+        <h1>Watch & Rate Nation</h1>
+        <p class="muted">Real fans • Real ratings • Real talk</p>
+        <div class="ctaRow">
+          <a class="btn btn--primary" href="#wrn">Start Rating</a>
+          <a class="btn btn--ghost" href="index.html">Back to Home</a>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>How it works</h3>
+        <ul class="checklist">
+          <li>Pick a title</li>
+          <li>Rate it from 0.5 to 5.0</li>
+          <li>Drop a quick review</li>
+          <li>See what the Nation thinks</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <section id="wrn" class="section">
+    <div class="container">
+      <div class="sectionHead">
+        <h2>Watch & Rate Nation</h2>
+        <p>Choose a category and see what the Nation thinks.</p>
+      </div>
+
+      <div class="grid2">
+        <div class="panel">
+          <h3>Submit a Rating</h3>
+
+          <form class="form" id="ratingForm">
+            <label>
+              Title
+              <input type="text" id="wrTitle" placeholder="e.g. John Wick" required />
+            </label>
+
+            <label>
+              Type
+              <select id="wrType" required>
+                <option value="Movie">Movie</option>
+                <option value="TV Show">TV Show</option>
+              </select>
+            </label>
+
+            <label>
+              Your Rating
+              <div class="starPicker">
+                <div class="starsRow" id="starRow"></div>
+                <div class="starMeta">
+                  <span class="muted">Selected:</span>
+                  <strong id="wrSelected">0.0</strong><span class="muted"> / 5.0</span>
+                </div>
+              </div>
+            </label>
+
+            <label>
+              Quick Review
+              <textarea
+                id="wrReview"
+                rows="4"
+                placeholder="Keep it real… what did you like or not like?"
+                required
+              ></textarea>
+            </label>
+
+            <button class="btn btn--primary" type="submit">Post to Nation</button>
+            <p class="fineprint" id="wrStatus" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <div class="panel">
+          <h3>Nation Ratings</h3>
+
+          <div class="wrStats">
+            <div class="wrStat">
+              <span class="muted">Average</span>
+              <div class="wrBig">
+                <strong id="wrAvg">0.0</strong><span class="muted"> / 5.0</span>
+              </div>
+              <div class="wrStars" id="wrAvgStars">☆☆☆☆☆</div>
+            </div>
+
+            <div class="wrStat">
+              <span class="muted">Total Posts</span>
+              <div class="wrBig"><strong id="wrCount">0</strong></div>
+              <div class="muted">ratings submitted</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <h4 class="wrSubhead">Latest Ratings</h4>
+          <div id="wrList" class="wrList">
+            <p class="muted">No ratings yet. Be the first to set the tone.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> ATCHABOYHOLLA Entertainment</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>

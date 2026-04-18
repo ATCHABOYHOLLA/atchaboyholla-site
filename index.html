@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>ATCHABOYHOLLA Entertainment</title>
+
+<style>
+
+body{
+  margin:0;
+  background:#000;
+  overflow:hidden;
+  font-family:Arial, sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+  color:white;
+}
+
+/* Background Glow */
+body::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at center,
+    rgba(0,150,255,.25),
+    transparent 70%);
+  animation: pulse 6s infinite alternate;
+}
+
+@keyframes pulse{
+  from{opacity:.4;}
+  to{opacity:1;}
+}
+
+/* Main Logo Container */
+.introBox{
+  text-align:center;
+  opacity:0;
+  transform:scale(.8);
+  animation:introFade 2s forwards;
+}
+
+/* Logo */
+.introBox img{
+  width:320px;
+  max-width:80vw;
+  margin-bottom:25px;
+  filter:drop-shadow(0 0 25px rgba(0,150,255,.6));
+}
+
+/* Text */
+.introTitle{
+  font-size:38px;
+  font-weight:800;
+  letter-spacing:2px;
+}
+
+.introSub{
+  margin-top:10px;
+  opacity:.7;
+  letter-spacing:3px;
+  font-size:14px;
+}
+
+/* Animation */
+@keyframes introFade{
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+/* Fade out before redirect */
+.fadeOut{
+  animation: fadeAway 1.5s forwards;
+}
+
+@keyframes fadeAway{
+  to{opacity:0;}
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="introBox" id="introBox">
+
+<img src="assets/atchaboyholla-logo.png" alt="ATCHABOYHOLLA Logo" />
+
+<div class="introTitle">ATCHABOYHOLLA</div>
+<div class="introSub">ENTERTAINMENT</div>
+
+</div>
+
+<script>
+
+setTimeout(() => {
+  document.getElementById("introBox").classList.add("fadeOut");
+}, 3500);
+
+setTimeout(() => {
+  window.location.href = "home.html";
+}, 5000);
+
+</script>
+
+</body>
+</html>
