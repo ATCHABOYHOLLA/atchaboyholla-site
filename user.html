@@ -10,40 +10,44 @@
 
 <body>
   <!-- Top Nav -->
-  <header class="topbar">
-    <div class="container topbar__inner">
-      <a class="brand" href="index.html#top" aria-label="ATCHABOYHOLLA Entertainment Home">
-        <img class="brand__logo" src="assets/watch-rate-logo.png" alt="Watch & Rate Nation Logo">
-        <span class="brand__text">ATCHABOYHOLLA <em>Entertainment</em></span>
-      </a>
+<header class="topbar">
+  <div class="container topbar__inner">
+    <a class="brand" href="index.html#top" aria-label="ATCHABOYHOLLA Entertainment Home">
+      <img class="brand__logo" src="assets/watch-rate-logo.png" alt="Watch & Rate Nation Logo">
+      <span class="brand__text">ATCHABOYHOLLA <em>Entertainment</em></span>
+    </a>
 
-      <!-- Right side: avatar + welcome + menu -->
-      <div style="display:flex;align-items:center;gap:12px;">
-        <img id="headerAvatar" alt="Your avatar"
-             style="width:36px;height:36px;border-radius:50%;display:none;object-fit:cover;border:1px solid rgba(255,255,255,.14);" />
-        <span id="userWelcome" class="userWelcome"></span>
+    <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
 
-        <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
+    <nav class="nav" id="nav">
+      <a href="index.html#about">About</a>
+      <a href="index.html#content">Content</a>
+      <a href="movies.html">🎬 Movies</a>
+      <a href="tv-shows.html">📺 TV Shows</a>
+      <a href="watch-rate.html">Watch & Rate Nation</a>
+      <a href="gaming-clips.html">🎮 Gaming Clips</a>
+      <a href="index.html#contact">Contact</a>
 
-      <nav class="nav" id="nav">
-        <a href="index.html#about">About</a>
-        <a href="index.html#content">Content</a>
-        <a href="movies.html">🎬 Movies</a>
-        <a href="tv-shows.html">📺 TV Shows</a>
-        <a href="watch-rate.html">Watch & Rate Nation</a>
-        <a href="gaming-clips.html">🎮 Gaming Clips</a>
-        <a href="index.html#contact">Contact</a>
-        <a id="navAuthLink" href="account.html">Sign Up / Login</a>
-        <img id="headerAvatar"
-             style="width:36px;height:36px;border-radius:50%;display:none;">
+      <span id="userWelcome" class="userWelcome"></span>
 
-        <button id="navLogoutBtn" class="btn btn--small btn--ghost" type="button" style="display:none;">Logout</button>
-      </nav>
-    </div>
-  </header>
+      <a id="navAuthLink" href="account.html">Sign Up / Login</a>
+
+      <!-- ONLY ONE avatar -->
+      <img id="headerAvatar"
+           style="width:36px;height:36px;border-radius:50%;display:none;"
+           alt="Avatar">
+
+      <button id="navLogoutBtn"
+              class="btn btn--small btn--ghost"
+              type="button"
+              style="display:none;">
+        Logout
+      </button>
+    </nav>
+  </div>
+</header>
 
   <!-- Profile Hero -->
   <main class="wrPageHero" style="min-height:45vh;">

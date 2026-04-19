@@ -144,6 +144,36 @@
           <div class="divider"></div>
 
           <h4 class="wrSubhead">Latest Ratings</h4>
+          <div class="wrFilters" style="margin-bottom:16px;display:grid;gap:12px;">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;">
+              <label>
+                Search
+                <input id="wrSearch" type="search" placeholder="Search titles, reviews, or members" />
+              </label>
+              <label>
+                Min Rating
+                <select id="wrMinRating">
+                  <option value="0">All ratings</option>
+                  <option value="4.5">4.5+</option>
+                  <option value="4">4.0+</option>
+                  <option value="3.5">3.5+</option>
+                  <option value="3">3.0+</option>
+                  <option value="2.5">2.5+</option>
+                  <option value="2">2.0+</option>
+                </select>
+              </label>
+              <label>
+                Sort
+                <select id="wrSort">
+                  <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="highest">Highest</option>
+                  <option value="lowest">Lowest</option>
+                </select>
+              </label>
+            </div>
+            <div id="wrSearchMeta" class="muted">Showing all ratings</div>
+          </div>
           <div id="wrList" class="wrList">
             <p class="muted">No ratings yet. Be the first to set the tone.</p>
           </div>
