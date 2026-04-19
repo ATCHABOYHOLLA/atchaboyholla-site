@@ -665,10 +665,12 @@ window.location.href = redirect || "home.html";
     await refreshReviews();
   });
 
-  (async () => {
-    await setAuthUI();
-    await wireAvatarUploadOnAccountPage();
-    await refreshReviews();
-    await loadUserPage();
-  })();
+(async () => {
+  await setAuthUI();
+  await setHeaderAuthUI();
+  await loadHeaderAvatar();
+  await wireAvatarUploadOnAccountPage();
+  await refreshReviews();
+  await loadUserPage();
+})();
 })();
