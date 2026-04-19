@@ -1,9 +1,9 @@
 (() => {
   "use strict";
 
-  const SUPABASE_URL = "https://knnroaedjbpydxdnfkkd.supabase.co";
+  const SUPABASE_URL = "https://xfznhdxeifrtbcaagdoq.supabase.co";
   const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtubnJvYWVkamJweWR4ZG5ma2tkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NTcxMzQsImV4cCI6MjA5MTIzMzEzNH0.sE6LrLaF8ljbNkrvOX72HDDIVFv5p2MootgNS7RnlaU";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhmem5oZHhlaWZydGJjYWFnZG9xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MzI2OTQsImV4cCI6MjA4NjMwODY5NH0.FqClkDemAvxhftotSrIf90xunRrECLC-leVP2-nQgug";
 
   const DEFAULT_AVATAR_URL = "assets/default-avatar.png";
 
@@ -234,12 +234,12 @@
         return;
       }
 
-      await ensureProfileRow(user);
-      authStatus.textContent = "✅ Logged in!";
-      await setAuthUI();
+console.log("LOGIN SUCCESS USER:", user);
 
-      const redirect = new URLSearchParams(location.search).get("redirect");
-      window.location.href = redirect || "home.html";
+authStatus.textContent = "✅ Logged in! Redirecting...";
+
+const redirect = new URLSearchParams(location.search).get("redirect");
+window.location.href = redirect || "home.html";
     } catch (err) {
       console.error(err);
       if (authStatus) authStatus.textContent = "❌ Login crashed.";
