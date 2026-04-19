@@ -9,7 +9,7 @@
   "use strict";
 
   /* ===================== SUPABASE SETUP ===================== */
-const SUPABASE_URL = "https://knnroaedjbpydxdnfkkd.supabase.co";
+const SUPABASE_URL = "https://xfznhdxeifrtbcaagdoq.supabase.co";
 
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhmem5oZHhlaWZydGJjYWFnZG9xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MzI2OTQsImV4cCI6MjA4NjMwODY5NH0.FqClkDemAvxhftotSrIf90xunRrECLC-leVP2-nQgug";
 
