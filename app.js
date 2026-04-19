@@ -239,7 +239,7 @@
       await setAuthUI();
 
       const redirect = new URLSearchParams(location.search).get("redirect");
-      if (redirect) window.location.href = redirect;
+      window.location.href = redirect || "home.html";
     } catch (err) {
       console.error(err);
       if (authStatus) authStatus.textContent = "❌ Login crashed.";
